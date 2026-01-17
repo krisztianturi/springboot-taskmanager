@@ -1,5 +1,7 @@
 package com.demo.springboottaskmanager.controller;
 
+import com.demo.springboottaskmanager.dto.CreateCustomerRequest;
+import com.demo.springboottaskmanager.dto.CustomerResponse;
 import com.demo.springboottaskmanager.model.Customer;
 import com.demo.springboottaskmanager.service.CustomerService;
 import lombok.AllArgsConstructor;
@@ -15,13 +17,13 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @GetMapping
-    public List<Customer> getCustomers() {
+    public List<CustomerResponse> getCustomers() {
         return customerService.findAll();
     }
 
     @PostMapping
-    public Customer addCustomer(@RequestBody Customer customer) {
-        return customerService.save(customer);
+    public CustomerResponse addCustomer(@RequestBody CreateCustomerRequest request) {
+        return customerService.save(request);
     }
 
 }

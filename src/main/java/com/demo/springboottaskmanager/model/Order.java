@@ -22,7 +22,15 @@ public class Order {
     private String product;
     private int quantity;
 
+    public Order(LocalDate orderDate, String status, String product, int quantity, Customer customer) {
+        this.orderDate = orderDate;
+        this.status = status;
+        this.product = product;
+        this.quantity = quantity;
+        this.customer = customer;
+    }
+
     @ManyToOne
-    @JoinColumn(name="CUSTOMER_ID")
+    @JoinColumn(name="CUSTOMER_ID", nullable = false)
     private Customer customer;
 }

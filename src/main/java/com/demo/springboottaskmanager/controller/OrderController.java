@@ -1,6 +1,7 @@
 package com.demo.springboottaskmanager.controller;
 
 import com.demo.springboottaskmanager.dto.CreateOrderRequest;
+import com.demo.springboottaskmanager.dto.OrderResponse;
 import com.demo.springboottaskmanager.model.Order;
 import com.demo.springboottaskmanager.service.OrderService;
 import lombok.AllArgsConstructor;
@@ -15,17 +16,17 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping
-    public List<Order> getOrders() {
+    public List<OrderResponse> getOrders() {
         return orderService.findAll();
     }
 
     @GetMapping("/customers/{customerId}/orders")
-    public List<Order> getOrdersByCustomer(@PathVariable Long customerId) {
+    public List<OrderResponse> getOrdersByCustomer(@PathVariable Long customerId) {
         return orderService.findOrdersByCustomerId(customerId);
     }
 
     @PostMapping
-    public Order createOrder(@RequestBody CreateOrderRequest request) {
+    public OrderResponse createOrder(@RequestBody CreateOrderRequest request) {
         return orderService.createOrder(request);
     }
 

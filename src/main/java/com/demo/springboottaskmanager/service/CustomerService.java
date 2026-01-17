@@ -1,9 +1,9 @@
 package com.demo.springboottaskmanager.service;
 
+import com.demo.springboottaskmanager.dto.CreateCustomerRequest;
+import com.demo.springboottaskmanager.dto.CustomerResponse;
 import com.demo.springboottaskmanager.model.Customer;
 import com.demo.springboottaskmanager.repository.CustomerRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,12 +16,21 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
-    public List<Customer> findAll() {
-        return customerRepository.findAll();
+    public List<CustomerResponse> findAll() {
+        return customerRepository.findAll()
+                .stream()
+                .map(c -> new CustomerResponse(
+                        c.getId(),
+                        c.getName(),
+                        c.getEmail()
+                ))
+                .toList();
     }
 
-    public Customer save(Customer c) {
-        return customerRepository.save(c);
+
+    public CustomerResponse save(CreateCustomerRequest request) {
+        Customer savedCustomer = customerRepository.save(new Customer(request.name(),request.email()));
+        return new CustomerResponse(savedCustomer.getId(), savedCustomer.getName(), savedCustomer.getEmail());
     }
 }
 
