@@ -2,8 +2,8 @@ package com.demo.springboottaskmanager.controller;
 
 import com.demo.springboottaskmanager.dto.CreateCustomerRequest;
 import com.demo.springboottaskmanager.dto.CustomerResponse;
-import com.demo.springboottaskmanager.model.Customer;
 import com.demo.springboottaskmanager.service.CustomerService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +22,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    public CustomerResponse addCustomer(@RequestBody CreateCustomerRequest request) {
+    public CustomerResponse addCustomer(@Valid @RequestBody CreateCustomerRequest request) {
         return customerService.save(request);
     }
 

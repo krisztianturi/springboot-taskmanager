@@ -2,8 +2,8 @@ package com.demo.springboottaskmanager.controller;
 
 import com.demo.springboottaskmanager.dto.CreateOrderRequest;
 import com.demo.springboottaskmanager.dto.OrderResponse;
-import com.demo.springboottaskmanager.model.Order;
 import com.demo.springboottaskmanager.service.OrderService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -26,7 +26,7 @@ public class OrderController {
     }
 
     @PostMapping
-    public OrderResponse createOrder(@RequestBody CreateOrderRequest request) {
+    public OrderResponse createOrder(@Valid @RequestBody CreateOrderRequest request) {
         return orderService.createOrder(request);
     }
 

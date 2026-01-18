@@ -23,6 +23,9 @@ public class OrderService {
     }
 
     public List<OrderResponse> findOrdersByCustomerId(Long customerId) {
+        if (!customerRepository.existsById(customerId)) {
+            throw new RuntimeException("Customer not found");
+        }
         return orderRepository.findByCustomerId(customerId).stream().map(order -> listToDto(order)).toList();
     }
 
@@ -37,7 +40,6 @@ public class OrderService {
                 order.getCustomer().getName()
         );
     }
-
 
     public OrderResponse createOrder(CreateOrderRequest request) {
 
