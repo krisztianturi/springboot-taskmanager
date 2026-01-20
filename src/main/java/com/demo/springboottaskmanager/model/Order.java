@@ -18,11 +18,15 @@ public class Order {
     private Long id;
 
     private LocalDate orderDate;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private OrderStatus status;
+
     private String product;
     private int quantity;
 
-    public Order(LocalDate orderDate, String status, String product, int quantity, Customer customer) {
+    public Order(LocalDate orderDate, OrderStatus status, String product, int quantity, Customer customer) {
         this.orderDate = orderDate;
         this.status = status;
         this.product = product;

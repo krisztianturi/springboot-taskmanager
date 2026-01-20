@@ -7,9 +7,9 @@ import com.demo.springboottaskmanager.model.Order;
 import com.demo.springboottaskmanager.repository.CustomerRepository;
 import com.demo.springboottaskmanager.repository.OrderRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -18,16 +18,19 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CustomerRepository customerRepository;
 
-    public List<OrderResponse> findAll() {
-        return orderRepository.findAll().stream().map(order -> listToDto(order)).toList();
+    public Page<OrderResponse> findAll(Pageable pageable) {
+        Page<Order> orders = orderRepository.findAll(pageable);
+        return orders.map(order -> listToDto(order));
     }
 
-    public List<OrderResponse> findOrdersByCustomerId(Long customerId) {
+    public Page<OrderResponse> findOrdersByCustomerId(Long customerId, Pageable pageable) {
         if (!customerRepository.existsById(customerId)) {
             throw new RuntimeException("Customer not found");
         }
-        return orderRepository.findByCustomerId(customerId).stream().map(order -> listToDto(order)).toList();
+        Page<Order> orders = orderRepository.findByCustomerId(customerId, pageable);
+        return orders.map(order -> listToDto(order));
     }
+
 
     private OrderResponse listToDto(Order order) {
         return new OrderResponse(
@@ -49,13 +52,7 @@ public class OrderService {
                         new RuntimeException("Customer not found"));
 
 
-        Order order = new Order(
-                request.orderDate(),
-                request.status(),
-                request.product(),
-                request.quantity(),
-                customer
-        );
+        Order order = new Order( request.orderDate(), request.status(), request.product(), request.quantity(), customer);
 
         Order savedOrder = orderRepository.save(order);
         return new OrderResponse(savedOrder.getId(),savedOrder.getOrderDate(),savedOrder.getStatus(), savedOrder.getProduct(),savedOrder.getQuantity(), savedOrder.getId(), savedOrder.getCustomer().getName());
